@@ -52,10 +52,11 @@ Optional最大的好处是它具有傻瓜式的防范，它强制我们思考abs
 
 尤其在返回值可能为“present”或可能不为“present”的时候，我们常常会忘记处理返回null时的情况，而返回Optional则不会有这种情况，因为想要通过编译我们不得不把Optional中的值取出来。
 
-## 方便的方法
+## 方便快捷的方法
 任何想要把null替换为其他默认值的时候，使用`Objects.firstNonNull(T, T)`。正如方法名一样，会返回第一个不为null的值，如果两个参数都是null，会立即抛出NullPointerException，这是使用Optional的一个好处。
 
 Strings类提供了一些与可能为null的值交互的方法，都是一些顾名思义的方法：
+
 方法 |
 -- |
 emptyToNull(String) |
