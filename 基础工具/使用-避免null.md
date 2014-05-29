@@ -29,7 +29,7 @@ possible.get(); // returns 5
 以下是比较常用的`Optional`操作：
 ### 创建一个Optional
 方法 | 描述
-- | -
+---- | ----
 `Optional.of(T)` | 创建一个包含非null的值，如果是该值为null，立即抛出异常
 `Optional.absent()`|返回某个类型的absent的Optional
 `Optional.fromNullable(T)`|把传入的可能为null的引用放入Optional，把非null当作present，null当作absent
