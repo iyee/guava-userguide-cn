@@ -57,8 +57,8 @@ Optional最大的好处是它具有傻瓜式的防范，它强制我们思考abs
 
 Strings类提供了一些与可能为null的值交互的方法，都是一些顾名思义的方法：
 
-方法 |
--- |
+方法 | 描述
+-- | --
 emptyToNull(String) |
 isNullOrEmpty(String) |
 nullToEmpty() |
