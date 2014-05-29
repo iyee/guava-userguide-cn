@@ -28,21 +28,21 @@ possible.get(); // returns 5
 	
 以下是比较常用的`Optional`操作：
 ### 创建一个Optional
-|方法|描述|
-|:-|:-|
-|`Optional.of(T)`|创建一个包含非null的值，如果是该值为null，立即抛出异常|
-|`Optional.absent()`|返回某个类型的absent的Optional|
-|`Optional.fromNullable(T)`|把传入的可能为null的引用放入Optional，把非null当作present，null当作absent|
+方法|描述
+-|-
+`Optional.of(T)`|创建一个包含非null的值，如果是该值为null，立即抛出异常
+`Optional.absent()`|返回某个类型的absent的Optional
+`Optional.fromNullable(T)`|把传入的可能为null的引用放入Optional，把非null当作present，null当作absent
 
 ### 查询方法
 以下都是非静态的方法
 |方法|描述|
-|:-|:-|
-|boolean isPresent()|如果此Optional包含非null的引用则返回true|
-|T get()|返回包含的引用T，该引用必须是present的，否则抛出IllegalArgumentException|
-|T or()|返回该Optional中的引用，如果该引用不是present的，则返回参数指定的默认值|
-|T orNull()|返回该Optional中的引用，如果该引用不是present的，返回null，与`fromNullable(T)`是相反的操作|
-|Set<T> asSet()|返回一个Optional中包含的实例的不可变的Set集合（如果有），否则返回空的不可变集合|
+-----|-----
+boolean isPresent()|如果此Optional包含非null的引用则返回true
+T get()|返回包含的引用T，该引用必须是present的，否则抛出IllegalArgumentException
+T or()|返回该Optional中的引用，如果该引用不是present的，则返回参数指定的默认值
+T orNull()|返回该Optional中的引用，如果该引用不是present的，返回null，与`fromNullable(T)`是相反的操作
+Set<T> asSet()|返回一个Optional中包含的实例的不可变的Set集合（如果有），否则返回空的不可变集合
 更多操作请参见Javadoc。
 ### 意义何在
 Optional最大的好处是它具有傻瓜式的防范，它强制我们思考absent的情况，反之null会使我们自然的忘记某些事，即使FindBugs可以帮助我们，我们仍然不相信它能非常好的应付这种情况。
@@ -53,10 +53,10 @@ Optional最大的好处是它具有傻瓜式的防范，它强制我们思考abs
 任何想要把null替换为其他默认值的时候，使用`Objects.firstNonNull(T, T)`。正如方法名一样，会返回第一个不为null的值，如果两个参数都是null，会立即抛出NullPointerException，这是使用Optional的一个好处。
 
 Strings类提供了一些与可能为null的值交互的方法，都是一些顾名思义的方法：
-|方法|
-|:-|:-|
-|emptyToNull(String)|
-|isNullOrEmpty(String)|
-|nullToEmpty()|
+方法
+--
+emptyToNull(String)
+isNullOrEmpty(String)
+nullToEmpty()
 
 我们强调一下，null String和empty String如果表示的意义一致，那么你的代码就需要重构了。当你把null String和empty String混合在一些的时候，Guava团队会感到伤心（如果他们表示不同的意义，那么情况可能就会好那么一点）
