@@ -43,8 +43,8 @@ possible.get(); // returns 5
 ---- | -----
 `boolean isPresent()` | 如果此Optional包含非null的引用则返回true
 `T get()` | 返回包含的引用T，该引用必须是present的，否则抛出IllegalArgumentException
-`T or()` | 返回该Optional中的引用，如果该引用不是present的，则返回参数指定的默认值
-`T orNull()` | 返回该Optional中的引用，如果该引用不是present的，返回null，与`fromNullable(T)`是相反的操作
+`T or()` | 返回该Optional中的引用，如果该引用不是"present"的，则返回参数指定的默认值
+`T orNull()` | 返回该Optional中的引用，如果该引用不是"present"的，返回null，与`fromNullable(T)`是相反的操作
 `Set<T> asSet()` | 返回一个Optional中包含的实例的不可变的Set集合（如果有），否则返回空的不可变集合
 更多操作请参见Javadoc。
 ### 意义何在
@@ -59,8 +59,8 @@ Strings类提供了一些与可能为null的值交互的方法，都是一些顾
 
 方法 |
 ---- |
-emptyToNull(String) |
-isNullOrEmpty(String) |
-nullToEmpty() |
+`emptyToNull(String)` |
+`isNullOrEmpty(String)` |
+`nullToEmpty()` |
 
 我们强调一下，null String和empty String如果表示的意义一致，那么你的代码就需要重构了。当你把null String和empty String混合在一些的时候，Guava团队会感到伤心（如果他们表示不同的意义，那么情况可能就会好那么一点）
