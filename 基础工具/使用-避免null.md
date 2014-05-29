@@ -38,6 +38,7 @@ possible.get(); // returns 5
 
 ### 查询方法
 以下都是非静态的方法
+
 方法 | 描述
 ---- | -----
 `boolean isPresent()` | 如果此Optional包含非null的引用则返回true
