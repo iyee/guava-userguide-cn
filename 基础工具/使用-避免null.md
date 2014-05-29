@@ -22,9 +22,11 @@
 有时候我们想要使用null表示不存在，但是可能它已经存在只是值为null（例如`Map<Integer, E>`）。
 
 `Optional<T>`是一个空指针的替代方案。它可以包含一个非空的引用（我们说该引用为“present”），也可以不包含任何引用（我们说该引用为“absent”），但是绝对不会包含一个null。
->Optional<Integer> possible = Optional.of(5);
+```java
+Optional<Integer> possible = Optional.of(5);
 possible.isPresent(); // returns true
 possible.get(); // returns 5
+```
 	
 以下是比较常用的`Optional`操作：
 ### 创建一个Optional
@@ -38,11 +40,11 @@ possible.get(); // returns 5
 以下都是非静态的方法
 方法 | 描述
 ---- | -----
-boolean isPresent() | 如果此Optional包含非null的引用则返回true
-T get() | 返回包含的引用T，该引用必须是present的，否则抛出IllegalArgumentException
-T or() | 返回该Optional中的引用，如果该引用不是present的，则返回参数指定的默认值
-T orNull() | 返回该Optional中的引用，如果该引用不是present的，返回null，与`fromNullable(T)`是相反的操作
-Set<T> asSet() | 返回一个Optional中包含的实例的不可变的Set集合（如果有），否则返回空的不可变集合
+`boolean isPresent()` | 如果此Optional包含非null的引用则返回true
+`T get()` | 返回包含的引用T，该引用必须是present的，否则抛出IllegalArgumentException
+`T or()` | 返回该Optional中的引用，如果该引用不是present的，则返回参数指定的默认值
+`T orNull()` | 返回该Optional中的引用，如果该引用不是present的，返回null，与`fromNullable(T)`是相反的操作
+`Set<T> asSet()` | 返回一个Optional中包含的实例的不可变的Set集合（如果有），否则返回空的不可变集合
 更多操作请参见Javadoc。
 ### 意义何在
 Optional最大的好处是它具有傻瓜式的防范，它强制我们思考absent的情况，反之null会使我们自然的忘记某些事，即使FindBugs可以帮助我们，我们仍然不相信它能非常好的应付这种情况。
