@@ -29,7 +29,7 @@ possible.get(); // returns 5
 以下是比较常用的`Optional`操作：
 ### 创建一个Optional
 |方法|描述|
-|-
+|:-|:-|
 |`Optional.of(T)`|创建一个包含非null的值，如果是该值为null，立即抛出异常|
 |`Optional.absent()`|返回某个类型的absent的Optional|
 |`Optional.fromNullable(T)`|把传入的可能为null的引用放入Optional，把非null当作present，null当作absent|
@@ -37,7 +37,7 @@ possible.get(); // returns 5
 ### 查询方法
 以下都是非静态的方法
 |方法|描述|
-|-
+|:-|:-|
 |boolean isPresent()|如果此Optional包含非null的引用则返回true|
 |T get()|返回包含的引用T，该引用必须是present的，否则抛出IllegalArgumentException|
 |T or()|返回该Optional中的引用，如果该引用不是present的，则返回参数指定的默认值|
@@ -54,7 +54,7 @@ Optional最大的好处是它具有傻瓜式的防范，它强制我们思考abs
 
 Strings类提供了一些与可能为null的值交互的方法，都是一些顾名思义的方法：
 |方法|
-|-
+|:-|:-|
 |emptyToNull(String)|
 |isNullOrEmpty(String)|
 |nullToEmpty()|
