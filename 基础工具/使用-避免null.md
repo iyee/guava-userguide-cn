@@ -58,9 +58,9 @@ Optional最大的好处是它具有傻瓜式的防范，它强制我们思考abs
 Strings类提供了一些与可能为null的值交互的方法，都是一些顾名思义的方法：
 
 方法 | 描述
--- | --
-emptyToNull(String) |
-isNullOrEmpty(String) |
-nullToEmpty() |
+---- | ----
+emptyToNull(String) | xx
+isNullOrEmpty(String) | xx
+nullToEmpty() | xx
 
 我们强调一下，null String和empty String如果表示的意义一致，那么你的代码就需要重构了。当你把null String和empty String混合在一些的时候，Guava团队会感到伤心（如果他们表示不同的意义，那么情况可能就会好那么一点）
