@@ -11,16 +11,16 @@ guava-libraries 用户指南中文翻译
 
 ## 目录
 ### [基础工具(Basic Utilities)](基础工具)
-[使用/避免null(using/avoiding null)](基础工具/使用_避免null(Using_avoiding null.md))
-[预检查(Preconditions)](基础工具/预检查(Preconditions).md))
-[排序(Ordering)](基础工具/排序(Ordering).md))
-Object方法(Object methods)
-Throwables
+- [使用/避免null(using/avoiding null)](基础工具/使用_避免null(Using_avoiding null.md))
+- [预检查(Preconditions)](基础工具/预检查(Preconditions).md))
+- [排序(Ordering)](基础工具/排序(Ordering).md))
+- Object方法(Object methods)
+- Throwables
 ### 集合(Collections)
-不可变集合(Immutable collections)
-新的集合类型(New collection types)
-工具类(Utility Classes)
-扩展工具(Extension Utilities)
+- 不可变集合(Immutable collections)
+- 新的集合类型(New collection types)
+- 工具类(Utility Classes)
+- 扩展工具(Extension Utilities)
 ### 缓存(Cache)
 ### 函数式编程(Functional Idioms)
 ### 并发(Concurrency)
