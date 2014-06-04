@@ -10,7 +10,7 @@ Ordering是Guava的流式的Comparator类，可以构建复杂的Comparator并�
 ## 创建
 常用的排序是使用静态方法提供的：
 
-| 方法 | 描述 |
+方法 | 描述
 ----- | -----
 `natural()` | 使用自然排序
 `usingToString()` | 使用基于String的排序（`toString()`的返回值）
@@ -27,6 +27,7 @@ Ordering<String> byLengthOrdering = new Ordering<String>() {
 ```
 ## 链式
 给定一个Ordering，可以将其包装成一个衍生的Ordering。必将常用的变体如下：
+
 方法 | 描述
 ----- | -----
 `reverse()` | 返回一个反转的Ordering
@@ -65,6 +66,7 @@ Ordering<Foo> ordering = Ordering.natural().nullsFirst().onResultOf(new Function
 
 ## 应用
 Guava提供了一系列使用Ordering来操作或检查值或集合的方法，比较常用的如下：
+
 方法 | 描述 | See also
 -|-|-
 `greatestOf(Iterable iterable, int k)` | 根据Ordering从大到小排序，并返回指定迭代器中前k个最大的元素 | `leasetOf()`
