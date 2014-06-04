@@ -12,6 +12,7 @@ Objects.equal(null, null); //true
 
 ## hashCode
 更简单的对所有属性进行hash计算。Guava的`Objects.hashCode(Object...)`根据属性顺序创建一个顺序敏感的hash计算。使用`Objects.hashCode(f1,f2,...fn)`来替代手工构建。
+
 注意：JDK7新增的`Objects`类提供了功能类似的`Objects.hash(Object...)`方法。
 
 ## toString
