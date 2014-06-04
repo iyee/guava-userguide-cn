@@ -31,7 +31,7 @@ Ordering<String> byLengthOrdering = new Ordering<String>() {
 方法 | 描述
 ----- | -----
 `reverse()` | 返回一个反转的Ordering
-nullsFirst() | 返回一个Ordering，排序规则为null在前，非null在后，其余按正常排序。另请参见`nullsLast()`
+`nullsFirst()` | 返回一个Ordering，排序规则为null在前，非null在后，其余按正常排序。另请参见`nullsLast()`
 `compound(Comparator)` | 返回一个使用打破常规的特殊Comparator
 `lexicographical()` | 返回一个遍历元素并按字典排序的Ordering
 `onResultOf(Function)` | 返回一个Ordering，排序规则为比较Function接口的值
@@ -55,6 +55,7 @@ Ordering<Foo> ordering = Ordering.natural().nullsFirst().onResultOf(new Function
 ```
 
 当调用Oedering的链式方法时，排序优先级是从右至左的（后向排序）。上面的例子会将Foo实例按以下步骤排序：
+
 1. 查找sortedBy字段
 2. 如果sortedBy字段的值为null，将其移至最前
 3. 将剩下不为null的sortedBy字段按String自然排序
