@@ -9,7 +9,7 @@ Ordering是Guava的流式的Comparator类，可以构建复杂的Comparator并�
 其核心仅仅是一个特殊的Comparator实例。Ordering简单的把依赖于Comparator的方法（例如`Collections.max()`）变成可见的实例方法。另外，Ordering类提供了链式方法来优化和增强现有的Comparators。
 ## 创建
 常用的排序是使用静态方法提供的：
-方法 | 描述
+| 方法 | 描述 |
 ----- | -----
 `natural()` | 使用自然排序
 `usingToString()` | 使用基于String的排序（`toString()`的返回值）
