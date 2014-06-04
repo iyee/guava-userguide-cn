@@ -68,7 +68,7 @@ Ordering<Foo> ordering = Ordering.natural().nullsFirst().onResultOf(new Function
 Guava提供了一系列使用Ordering来操作或检查值或集合的方法，比较常用的如下：
 
 方法 | 描述 | See also
--|-|-
+----- | ----- | -----
 `greatestOf(Iterable iterable, int k)` | 根据Ordering从大到小排序，并返回指定迭代器中前k个最大的元素 | `leasetOf()`
 `isOrdered(Iteratable)` | 根据Ordering检查指定的Iterable是否是非递减排序的 | `isStrictOrdered()`
 `sortedCopy(Iterable)` | 把指定元素的已排序的副本作为List返回 | `immutableSortedCopy()`
