@@ -59,10 +59,13 @@ Ordering<Foo> ordering = Ordering.natural().nullsFirst().onResultOf(new Function
 1. 查找sortedBy字段
 2. 如果sortedBy字段的值为null，将其移至最前
 3. 将剩下不为null的sortedBy字段按String自然排序
+
 之所以会后向排序，是因为每一个链式调用都会把前一个Ordering包装成一个新的实例。
+
 （后向排序例外：对于链式方法`compound()`，是从左至右的，为避免混乱，尽量避免该方法与其他链式方法的混合调用）。
 
 如果链式调用过长的话会难以理解，建议最多使用3个链式调用（上面的例子），另外，把中间对象（例如Function）分离开来会使代码更加简洁：
+
 ```Ordering<Foo> ordering = Ordering.natural().nullsFirst().onResultOf(sortKeyFunction);```
 
 ## 应用
