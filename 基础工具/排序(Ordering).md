@@ -6,7 +6,7 @@ assertTrue(byLengthOrdering.reverse().isOrdered(list));
 ## 概述
 Ordering是Guava的流式的Comparator类，可以构建复杂的Comparator并将其应用到集合类上。
 
-其核心仅仅是一个特殊的Comparator实例。Ordering简单的把依赖于Comparator的方法（例如`Collections.max()`）变成可见的实例方法。另外，rdering类提供了链式方法来优化和增强现有的Comparators。
+其核心仅仅是一个特殊的Comparator实例。Ordering简单的把依赖于Comparator的方法（例如`Collections.max()`）变成可见的实例方法。另外，Ordering类提供了链式方法来优化和增强现有的Comparators。
 ## 创建
 常用的排序是使用静态方法提供的：
 方法 | 描述
