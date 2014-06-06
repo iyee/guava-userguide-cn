@@ -9,6 +9,8 @@ guava-libraries 用户指南中文翻译
 
 有关guava示例的代码请参见https://github.com/wf2030/guava-examples
 
+__非常欢迎加入翻译计划，请Fork这个项目并通知我你要翻译的章节，完成之后提交Pull Request即可__。
+
 ## 目录
 ### [基础工具(Basic Utilities)](基础工具)
 - [使用/避免null(using/avoiding null)](基础工具/使用_避免null(Using_avoiding null).md)
