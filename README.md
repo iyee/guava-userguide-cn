@@ -20,7 +20,7 @@ __非常欢迎加入翻译计划，请Fork这个项目并通知我你要翻译�
 - Throwables
 
 ### [集合(Collections)](集合)
-- [不可变集合](集合/不可变集合(Immutable collections).md)
+- [不可变集合(Immutable collections)](集合/不可变集合(Immutable collections).md)
 - 新的集合类型(New collection types)
 - 工具类(Utility Classes)
 - 扩展工具(Extension Utilities)
