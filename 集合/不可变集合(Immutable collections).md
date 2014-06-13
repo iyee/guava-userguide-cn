@@ -34,7 +34,7 @@ JDK提供了`Collections.unmodifiableXxx`方法，但是在我们看来，它有
 
 **当不需要改变集合或希望将其作为常量的时候，使用防御式拷贝将其拷贝到不可变的集合中是非常好的实践。**
 
-**重要：**
+**注意：**
 Guava的所有不可变集合的实现都不允许null值。我们在Google内部基础代码上作了详细的测试，报告显示仅有5%的时候是允许null元素的存在，其余95%的时候都是在遇到null的时候越快抛出异常越好。如果你需要null值，考虑使用`Collections.unmodifiableList`等允许null的方法的实现。更详细的信息参见[这里](https://code.google.com/p/guava-libraries/wiki/UsingAndAvoidingNullExplained)。
 
 # How
