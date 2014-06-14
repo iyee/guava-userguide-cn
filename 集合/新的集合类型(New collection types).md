@@ -55,7 +55,7 @@ size() | 返回Multiset的大小
 -  对不存在于`Multiset`中元素调用`Multiset.count(elem)`始终返回0。
 
 ## 实现
-Guava有多个`Multiset`实现，大概与JDK的Map实现差不多：
+Guava有多个`Multiset`实现，个数大概与JDK的Map实现的个数差不多：
 
 Map | 对应的Multiset | 支持null
 --- | --- | ---
@@ -71,3 +71,48 @@ ImmutableMap | ImmutableMultiset | No
 `TreeMultiset`实现了`SortedMultiset`接口，在写本文档之时，`ImmutableSortedMultiset`正在进行GWT兼容性的测试。
 
 # `MultiMap`（多重Map）
+任何一个有经验的Java程序员，应该都实现过`Map<K, 	List<V>>`或`Map<K, Set<V>>`，然后处理这个笨拙的结构。例如，`Map<K, Set<V>>`表示一个典型的未标记的有向图。Guava的`MultiMap`框架让键到多值的映射更加简单。`MultiMap`是关联一个键到任意多个值的一种通用方法。
+
+以下两种方式来理解`MultiMap`的概念：单个键值映射的集合：
+
+a->1   a->2   a-4   b->3   c->5
+
+或唯一的键到值集合的映射：
+
+a->[1,2,4]   b->3   c->5
+
+通常，`MultiMap`接口在第一种视图下是最好的想法，同时允许使用`asMap()`方法获取`Map<K, Collection<V>>`的视图。最重要的是，不存在一个key映射到一个空集合：一个key映射到至少一个值，否则它在`MultiMap`中就不存在。
+
+很少会直接使用`MultiMap`接口，更经常的是使用`ListMultiMap`（映射key到List）或`SetMultimap`（映射key到Set）。
+
+## 修改
+`Multimap.get(key)`返回的是与此key关联的所有值的视图，即使它们当前不存在。对于`ListMultiMap`返回的是`List`，对于`SetMultiMap`，返回的是`Set`。
+
+对相关的`MultiMap`修改操作，例如：
+
+```java
+Set<Person> aliceChildren = childrenMultimap.get(alice);
+aliceChildren.clear();
+aliceChildren.add(bob);
+aliceChildren.add(carol);
+```
+其他的一些修改操作如下：
+
+方法签名 | 描述 | 等价操作
+--- | --- | ---
+put(K, V) | 添加一个键值对 | multimap.get(K).add(V)
+putAll(K, Iterable<V>) | 添加指定Iterable中的所有值并将其映射到K | Iterables.addAll(multimap.get(K), V)
+remove(K, V) | 删除一个键值对映射，如果multimap改变了返回true | multimap.get(K).remove(V)
+removeAll(K) | 删除并返回指定key映射的值的集合，返回的集合是可变或不可变的，但是修改这个集合不会影响到这个multimap | multimap.get(K).clear()
+replaceValues(K, Iterable<V>) | 替换该key关联的值为指定的迭代器 |　multimap.get(K).clear(); Iterables.addAll(multimap.get(K), V);
+
+## 视图
+`Multimap`提供了几种强大的视图：
+
+- `asMap`把`Multimap<K, V>`作为`Map<K, Collection<V>>`视图，返回的Map支持删除操作，并会将改变写回，但不支持`put()`或`putAll()`操作。另外，如果你需要不存在的key返回null而不是可写的空集合，使用`asMap().get(K)`（可以将其强转为需要的集合`SetMultimap`的`Set`或`ListMultimap`的`List`，但是类型系统不允许`ListMultimap<K, V>`返回`Map<K, List<V>>`）。
+- `entries`返回`Multimap`中的`Collection<Map.Entry<K, V>>`视图。
+- `keySet`返回`Multimap`中的不重复的key的Set集合。
+- `keys`将`Multimap`中的key作为`MultiSet`视图返回，其中的元素可被删除，但不能添加，修改会被写回。
+- `values`将`Multimap`中的值展平后返回`Collection<V>`，所有的值将会在一个集合中，类似于`Iterables.concat(multimap.asMap().values())`，但是返回的是一个完整的`Collection`。
+
+## `Multimap`不是Map
