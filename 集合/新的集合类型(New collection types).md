@@ -115,4 +115,91 @@ replaceValues(K, Iterable<V>) | 替换该key关联的值为指定的迭代器 |�
 - `keys`将`Multimap`中的key作为`MultiSet`视图返回，其中的元素可被删除，但不能添加，修改会被写回。
 - `values`将`Multimap`中的值展平后返回`Collection<V>`，所有的值将会在一个集合中，类似于`Iterables.concat(multimap.asMap().values())`，但是返回的是一个完整的`Collection`。
 
-## `Multimap`不是Map
+## `Multimap`不是`Map`
+`Multimap<K, V>`不是`Map<K, Collection<V>>`，尽管`Multimap`是使用这种方式实现的，以下是它们的差异：
+
+- `Multimap.get(key)`返回的始终是非null但可能是空的集合，这并不是说multimap的key映射的值占用了内存，而是返回的集合视图允许你添加关联。
+- 如果你更喜欢类似Map的操作（如果key不存在则返回null），使用`asMap()`视图获取`Map<K, Collection<V>>`（或从`ListMultimap`获取一个`Map<K, List<V>>`，使用静态的`Multimaps.asMap()`方法，`SetMultimap`和`SortedSetMultimap`也有类似的方法）。
+- `Multimap.containsKey(key)`当且仅当存在元素与该key关联时才返回true。类似的，如果一个key之前关联了一个或多个值，但后来从multimap中删除了，该方法将返回false。
+- `Multimap.entries()`返回`Multimap`中的所有key的映射，如果想要key的集合，使用`asMap().entrySet()`。
+- `Multimap.size()`返回整个multimap的大小，并不是不重复key的个数，使用`Multimap.keySet().size()`来获取无重复key的个数。
+
+## 实现
+`Multimap`提供了多种实现，在大多数情况下可以用来替代`Map<K, Collection<V>>`。
+
+实现 | key的行为类似... | value的行为类似...
+--- | --- | ---
+ArrayListMultimap | HashMap | ArrayList
+HashMultimap | HashMap | HashSet
+LinkedListMultimap[^1] | LinkedHashMap | LinkedList
+LinkedHashMultimap[^2] | LinkedHashMap | LinkedHashSet
+TreeMultimap | TreeMap | TreeSet
+ImmutableListMultimap | ImmutableMap | ImmutableList
+ImmutableSetMultimap | ImmutableMap | ImmutableSet
+
+除了不可变的实现，其他都支持null key 和null value。
+
+[^1] `LinkedListMultimap.entries()`为无重复的key value保留了迭代顺序。
+[^2] `LinkedHashMultimap`同时保留了entry的插入顺序，key的插入顺序以及每个key的value的顺序。
+
+注意，以上并不是每个都是用`Map<K, Collection<V>>`实现的（一部分`Multimap`为了最小化资源占用使用了自定义的哈希表）。
+
+# `BiMap`
+传统的键值双向映射是维护两个`Map`并保持它们的同步，这样很容易导致bug的出现，并且当value已经在map中的时候会让人感到困惑，例如：
+```java
+Map<String, Integer> nameToId = Maps.newHashMap();
+Map<Integer, String> idToName = Maps.newHashMap();
+
+nameToId.put("Bob", 42);
+idToName.put(42, "Bob");
+//如果Bob或42已经存在Map中该怎么办？
+//如果忘记同步了会出现奇怪的bug...
+```
+
+`BiMap<K, V>`是一个`Map<K, V>`，它能够：
+
+- 允许使用`inverse()`反转查看`BiMap<V, K>`
+- 保证values的惟一性，将values作为一个Set集合
+
+`BiMap.put(key, value)`会抛出`IllegalArgumentException`如果映射key到一个已存在的value。如果要删除与此value关联的key，使用`BiMap.forcePut(key, value)`。
+```java
+BiMap<String, Integer> userId = HashBiMap.create();	
+...
+String userForId = userId.inverse().get(id);
+```
+
+## 实现
+key-value映射实现 | value-key 映射实现 | 相关BiMap
+--- | --- | ---
+HashMap | HashMap | HashBiMap
+ImmutableMap | ImmutableMap | ImmutableBiMap
+EnumMap | EnumMap | EnumBiMap
+EnumMap | HashMap | EnumHashBiMap
+
+注意：`BiMap`类似`SyncronizedBiMap`的工具在`Maps`类中。
+
+# `Table`
+```java
+Table<Vertex, Vertex, Double> weightedGraph = HashBasedTable.create();
+weightedGraph.put(v1, v2, 4);
+weightedGraph.put(v1, v3, 20);
+weightedGraph.put(v2, v3, 5);
+
+weightedGraph.row(v1); //返回一个映射（v2->4, v3->20）
+weightedGraph。column(v3); //返回一个映射(v1->20, v2->5)
+```
+当想要同时以多个key索引时，会使用到`Map<FirstName, Map<LastName, Person>>`这种丑陋的结构。Guava提供了一个新的集合类型 - `Table`，适用于这种基于“行列”的情景。它有一系列的视图可供使用：
+
+- `rowMap()`，将`Table<R, C, V>`作为`Map<R, Map<C, V>>`视图查看，类似的，`rowKeySet()`返回一个`Set<R>`
+- `row(r)`返回一个非null的`Map<C, V>`，对这个`Map`的操作将会影响到关联的`Table`
+- 类似的基于列的方法：`columnMap()`, `columnKeySet()`, `column(c)`（基于列的访问效率要低于基于行的访问）
+- `cellSet()`将`Table.Cell<R, C, V>`的集合作为`Table`的视图返回
+
+以下是`Table`的实现：
+
+- `HashBasedTable`，由`HashMap<R, HashMap<C, V>>`实现
+- `TreeBasedTable`，由`TreeMap<R, TreeMap<C, V>>`实现
+- `ImmutableTable`，由`ImmutableMap<R, ImmutableMap<C, V>>`（`ImmutableTable`是为稀疏和密集数据集优化的实现）
+- `ArrayTable`，全部的行列需要在构造的时候指定，当该`Table`是密集型的时候为了内存和速度的效率，它由二维数组实现的。`ArrayTable`的实现与其他的实现有些不同，具体参见Javadoc。
+
+# `ClassToInstanceMap`
