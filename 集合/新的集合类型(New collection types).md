@@ -140,6 +140,7 @@ ImmutableSetMultimap | ImmutableMap | ImmutableSet
 除了不可变的实现，其他都支持null key 和null value。
 
 [^1] `LinkedListMultimap.entries()`为无重复的key value保留了迭代顺序。
+
 [^2] `LinkedHashMultimap`同时保留了entry的插入顺序，key的插入顺序以及每个key的value的顺序。
 
 注意，以上并不是每个都是用`Map<K, Collection<V>>`实现的（一部分`Multimap`为了最小化资源占用使用了自定义的哈希表）。
