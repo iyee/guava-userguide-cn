@@ -267,6 +267,5 @@ rangeMap.remove(Range.closed(5, 11)); //{[1, 3] - > "foo", (3, 5) -> "bar", [11,
 ## 视图
 `RangeMap`提供了两种视图：
 
-`asMapOfRanges()`：将`RangeMap`作为`Map<Range<K>, V>`视图返回，支持迭代该`RangeMap`。
-
+- `asMapOfRanges()`：将`RangeMap`作为`Map<Range<K>, V>`视图返回，支持迭代该`RangeMap`。
 - `subRangeMap(Range<K>)`，返回该`RangeMap`与指定`Range`的交集视图，传统的`headMap`, `subMap`, `tailMap`操作就是建立在此基础上。
