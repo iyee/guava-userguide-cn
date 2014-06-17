@@ -187,7 +187,7 @@ weightedGraph.put(v1, v3, 20);
 weightedGraph.put(v2, v3, 5);
 
 weightedGraph.row(v1); //返回一个映射（v2->4, v3->20）
-weightedGraph。column(v3); //返回一个映射(v1->20, v2->5)
+weightedGraph.column(v3); //返回一个映射(v1->20, v2->5)
 ```
 当想要同时以多个key索引时，会使用到`Map<FirstName, Map<LastName, Person>>`这种丑陋的结构。Guava提供了一个新的集合类型 - `Table`，适用于这种基于“行列”的情景。它有一系列的视图可供使用：
 
