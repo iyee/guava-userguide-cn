@@ -187,7 +187,7 @@ weightedGraph.put(v1, v3, 20);
 weightedGraph.put(v2, v3, 5);
 
 weightedGraph.row(v1); //返回一个映射（v2->4, v3->20）
-weightedGraph。column(v3); //返回一个映射(v1->20, v2->5)
+weightedGraph.column(v3); //返回一个映射(v1->20, v2->5)
 ```
 当想要同时以多个key索引时，会使用到`Map<FirstName, Map<LastName, Person>>`这种丑陋的结构。Guava提供了一个新的集合类型 - `Table`，适用于这种基于“行列”的情景。它有一系列的视图可供使用：
 
@@ -204,3 +204,69 @@ weightedGraph。column(v3); //返回一个映射(v1->20, v2->5)
 - `ArrayTable`，全部的行列需要在构造的时候指定，当该`Table`是密集型的时候为了内存和速度的效率，它由二维数组实现的。`ArrayTable`的实现与其他的实现有些不同，具体参见Javadoc。
 
 # `ClassToInstanceMap`
+有些时候，Map的key不全是一致的类型：它们是某一个特定的类型（types），如果希望映射到它们具体的类型，Guava为此提供了`ClassToInstanceMap`。
+
+为了继承`Map`接口，为了避免不必要的类型转换和强制类型安全，`ClassToInstanceMap`提供了`T getInstance(Class<T>)`和`T putInstance(Class<T>, T)`方法。
+
+`ClassToInstanceMap`只有一个类型参数，命名为`B`，表示该map管理的类型的基类，例如：
+```java
+ClassToInstanceMap<Number> numberDefaults = MutableClassToInstanceMap.create();
+numberDefaults.putIntance(Integer.class, Integer.valueOf(0));
+```
+
+`ClassToInstanceMap<B>`实现了`Map<Class<? extends B>, B>`，或者这么说，它是B的子类的类型到B的实例的映射。这会让`ClassToInstanceMap`中的泛型更易于理解，只要记住一点：`B`是Map中的基类类型 - 通常，`B`就是一个`Object`。
+
+Guava提供了两个有用的实现：`MutableClassToInstanceMap`和`ImmutableClassToINstanceMap`。
+
+注意：类似其他的`Map<Class, Object>`，`ClassToInstanceMap`可能包含基本数据类型，而且基本数据类型和它的包装类型可能映射到不同的值。
+
+# `RangeSet`
+注：以下用范围集来表示数学上的集合的概念，以免与Java的集合混淆。
+
+`RangeSet`描述了一组断开的、非空的范围集（并集）。当把一个范围添加到一个范围集的时候，所有可连接的范围集（交集）都会合并为一个范围，空集将被忽略。例如：
+```java
+RangeSet<Integer> rangeSet = TreeRangeSet.create();
+rangeSet.add(Range.closed(1, 10)); //{[1, 10]}
+rangeSet.add(Range.closedOpen(11, 15)); //断开的范围集，{[1, 10], [11, 15)}
+rangeSet.add(Range.closedOpen(15, 20)); //可连接的范围（有交集），{[1, 10], [11, 20)}
+rangeSet.add(Range.openClosed(0, 0)); //空集，{[1, 10], [11, 20)}
+rangeSet。remove(Range.open(5, 10)); //[1, 10]区间被分隔了，{[1, 5], [10, 10], [11, 20]}
+```
+注意合并像`Range.closed(1, 10)`和`Range.closedOpen(11, 15)`的范围集，必须先使用`Range.canonical(DiscreteDomain)`预先处理范围，例如，`DiscreteDomain.withIntegers()`。
+
+**注意：**`RangeSet`不支持GWT，也不支持JDK1.5，因为它需要JDK1.6中的`NavigableMap`的支持。
+
+## 视图
+//TODO 未完成
+
+`RangeSet`实现支持很多范围的视图，包括：
+
+- `complement()`：
+- `sunRangeSet(Range<C>)`：返回该范围集和指定的范围的交集
+- `asRanges()`：
+- `asSet(DiscreteDomain<C>)`：
+
+## 查询
+为了在视图上操作，`RangeSet`直接提供了几个查询操作，常用的有：
+
+- `contains(C)`：`RangeSet`最基础的操作，查询该`RangeSet`中的`Range`是否包含指定的元素。
+- `rangeContaining(C)`：返回包含该元素的`Range`，如果不包含该元素，返回null。
+- `encloses(Range<C>)`：测试`RangeSet`中的`Range`是否包含指定的`Range`。
+- `span()`：//TODO
+
+# `RangeMap`
+`RangeMap`是一组范围集到值的映射，不像`RangeSet`，`RangeMap`从来不会合并相邻的映射，即使相邻的范围集映射到相同的值。例如：
+```java
+RangeMap<Integer, String> rangeMap = TreeRangeMap.create();
+rangeMap.put(Range.closed(1, 10), "foo"); //{[1, 10] -> "foo"}
+rangeMap.put(Range.open(3, 6), "bar"); //{[1, 3] - > "foo", (3, 6) -> "bar", [6, 10] -> "foo"}
+rangeMap.put(Range.open(10, 20), "foo"); //{[1, 3] - > "foo", (3, 6) -> "bar", [6, 10] -> "foo", (10, 20) -> "foo"}
+rangeMap.remove(Range.closed(5, 11)); //{[1, 3] - > "foo", (3, 5) -> "bar", [11, 20) -> "foo"}
+```
+
+## 视图
+`RangeMap`提供了两种视图：
+
+`asMapOfRanges()`：将`RangeMap`作为`Map<Range<K>, V>`视图返回，支持迭代该`RangeMap`。
+
+- `subRangeMap(Range<K>)`，返回该`RangeMap`与指定`Range`的交集视图，传统的`headMap`, `subMap`, `tailMap`操作就是建立在此基础上。
