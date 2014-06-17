@@ -1,6 +1,7 @@
 大多在JDK集合框架上有经验的程序员都非常喜欢`java.util.Collections`工具类。Guava提供了更多的工具类：兼容所有集合的静态方法。这些是Guava的最流程和成熟的部分。
 
 特定接口的方法以一种直观的方式被分组在一起：
+
 接口 | JDK或Guava | 相关的Guava工具类
 --- | --- | ---
 Collection | JDK | Collections2(避免与java.util.Collection冲突)
