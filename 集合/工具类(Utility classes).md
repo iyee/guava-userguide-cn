@@ -1,7 +1,6 @@
 大多在JDK集合框架上有经验的程序员都非常喜欢`java.util.Collections`工具类。Guava提供了更多的工具类：兼容所有集合的静态方法。这些是Guava的最流程和成熟的部分。
 
 特定接口的方法以一种直观的方式被分组在一起：
-
 接口 | JDK或Guava | 相关的Guava工具类
 --- | --- | ---
 Collection | JDK | Collections2(避免与java.util.Collection冲突)
@@ -82,12 +81,50 @@ String theElement = Iterables.getOnlyElement(thisSetIsDefinitelyASingleton);
 //如果该Set不是单例的就会出错
 ```
 
-## 类似集合的
+## 类似集合的方法
+集合在其他集合的基础上天生支持这些操作，但在可迭代对象上并不是。
+
+以下每一个方法当输入确实是`Collection`的时候都会用相关的`Collection`接口作为代理。例如，如果调用`Iterable.size()`并且传递的是`Collection`，那么它会调用`Collection.size()`来替代迭代这个`Iterable`。
+
+方法 | 类似的Collection的方法 | 等价的FluentIterable方法
+--- | --- | ---
+addAll(Collection addTo, Iterable toAdd) | Collection.addAll(Collection)
+contains(Iterable, Object) | Collection.contains(Object) | FluentIterable.contains(Object)
+removeAll(Iterable removeFrom, Colletion toRemove) | Collection.removeAll(Collection)
+retainAll(Iterable removeFrom, Collection toRetain) | Collection.retainAll(Collection)
+size(Iterable) | Collection.size() | FluentIterable.size()
+toArray(Iterable, Class) | Collection.toArray(T[]) | FluentIterable.toArray(Class)
+isEmpty(Iterable) | Collection.isEmpty() | FluentIterable.isEmpty()
+get(Iterable, int) | List.get(int) | FluentIterable.get(int)
+toString(Iterable) | Collection.toString | FluentIterable.toString()
 
 ## `FluentIterable`
+除了上面提到的方法和函数式的方法，`FluentIterable`还有一些方便拷贝到不可变集合的方法：
+
+ImmutableList | -
+--- | ---
+ImmutableSet | toImuutableSet
+ImmutableSortedSet | toImmutableSortedSet
 
 # `Lists`
+为了静态构造方法和函数式编程，`Lists`提供了一系列作用于`List`的有价值的工具方法。
 
+方法 | 描述
+--- | ---
+partition(List, int) | 返回一个把指定List切分成指定大小的N份的视图
+reverse(List) | 返回一个反正List的视图。如果List是不可变的，使用`ImmutableList.reverse()`代替。
+```java
+List<Integer> countUp = Ints.asList(1,2,3,4,5);
+List<Integer> countdown = Lists.reverse(countUp, 2); // {5,4,3,2,1}
+List<List<Integer>> parts = Lists.partition(countUp, 2); // {{1,2}, {3,4}, {5}}
+```
 ## 静态工厂
+`Lists`提供了以下静态工厂方法：
+
+实现 | 工厂方法
+--- | ---
+ArrayList | basic, with elements, from iterable, with exactly capacity, with expected size, from Iterator
+LinkedList | basic, from Iterable
 
 # `Sets`
+`Sets`工具类提供了一系列犀利的方法。
