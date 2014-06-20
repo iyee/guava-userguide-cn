@@ -12,14 +12,14 @@ guava-libraries 用户指南中文翻译
 __非常欢迎加入翻译计划，请Fork这个项目并通知我你要翻译的章节，完成之后提交Pull Request即可__。
 
 ## 目录
-### [基础工具(Basic Utilities)](基础工具)
+### 基础工具(Basic Utilities)
 - [使用/避免null(using/avoiding null)](基础工具/使用_避免null(Using_avoiding null).md)
 - [预检查(Preconditions)](基础工具/预检查(Preconditions).md)
 - [排序(Ordering)](基础工具/排序(Ordering).md)
 - [Object方法(Object methods)](基础工具/Object方法(Object_methods).md)
 - Throwables
 
-### [集合(Collections)](集合)
+### 集合(Collections)
 - [不可变集合(Immutable collections)](集合/不可变集合(Immutable collections).md)
 - [新的集合类型(New collection types)](集合/新的集合类型(New collection types).md)
 - [工具类(Utility Classes)](集合/工具类(Utility classes).md)
