@@ -1,7 +1,7 @@
 guava-userguide-cn
 ===========================
 
-guava-libraries 用户指南中文翻译
+guava-libraries 用户指南中文翻译（值此翻译时，Guava的版本为17.0）
 
 官方用户指南：https://code.google.com/p/guava-libraries/wiki/GuavaExplained
 
