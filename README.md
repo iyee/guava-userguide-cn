@@ -25,7 +25,7 @@ __非常欢迎加入翻译计划，请Fork这个项目并通知我你要翻译�
 - [工具类(Utility Classes)](集合/工具类(Utility classes).md)
 - [扩展工具(Extension Utilities)](集合/扩展工具(Extension Utilities).md)
 
-### 缓存(Cache)
+### 缓存(Caches)
 
 
 ### 函数式编程(Functional Idioms)
