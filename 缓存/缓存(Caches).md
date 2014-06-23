@@ -51,7 +51,6 @@ try {
 查询`LoadingCache`的权威方法是通过`get(K)`方法，要么返回一个已缓存的值，要么使用`CacheLoader`来加载一个新的值。`CacheLoader`可能会抛出异常，`LoadingCache.get(K)`将会抛出`ExecutionException`。如果定义了不抛出经检查的异常，在获取的时候可以使用`getUnchecked(K)`来查询缓存。注意不要使用`getUnchecked(K)`方法来查询定义了检查异常的`CacheLoader`。
 
 ```java
-```java
 LoadingCache<Key, Graph> graphs = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES).build(new CacheLoader<Key, Graph>() {
 	public Graph load(Key k) {
 		return createExpansiveGraph(k);
