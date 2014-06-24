@@ -7,7 +7,7 @@ guava-libraries 用户指南中文翻译（值此翻译时，Guava的版本为17
 
 由于英语不是很好，某些地方为方便理解可能用比较白话的文字而不是原版的直接翻译，若有错误，欢迎在issues中指出。
 
-有关guava示例的代码请参见https://github.com/wf2030/guava-examples（尚无内容，翻译完成时开始写示例）
+有关guava示例的代码请参见 https://github.com/wf2030/guava-examples （尚无内容，翻译完成时开始写示例）
 
 __非常欢迎加入翻译计划，请Fork这个项目并通知我你要翻译的章节，完成之后提交Pull Request即可__。
 
