@@ -35,7 +35,7 @@ __非常欢迎加入翻译计划，请Fork这个项目并通知我你要翻译�
 
 
 ### 字符串(Strings)
-
+- [字符串(Strings)](字符串/字符串(Strings).md)
 
 ### 网络(Networking)
 
