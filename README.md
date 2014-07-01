@@ -29,7 +29,7 @@ __非常欢迎加入翻译计划，请Fork这个项目并通知我你要翻译�
 - [缓存(Caches)](缓存/缓存(Caches).md)
 
 ### 函数式风格(Functional Idioms)
-
+- [函数式风格(Functional Idioms)](函数式风格/函数式风格(Functional Idioms).md)
 
 ### 并发(Concurrency)
 
