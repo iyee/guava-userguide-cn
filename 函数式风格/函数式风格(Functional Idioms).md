@@ -64,7 +64,7 @@ Guava提供了两个基础的“函数式”接口：
 ### 特殊的`Predicate`
 对于字符，有特定的`Predicate` — `CharMatcher`，具有更高的效率并且更加有用。`CharMatcher`实现了`Predicate<Character>`，使用`CharMatcher.forPredicate()`可以把一个`Predicate`转成`CharMatcher`。详细信息请参考[`CharMatcher`](字符串/字符串(Strings).md)一节。
 
-另外，对基于比较的`Predicate`，大多数需求都可以通过`Range`类型来解决。`Range`实现了`Predicate`，测试其中的内容。例如：`Range.atMost(2)`就是一个`Predicate<Integer>`，更多详情请参考[相关内容](区间-范围/区间-范围(Ranges).md)。
+另外，对基于比较的`Predicate`，大多数需求都可以通过`Range`类型来解决。`Range`实现了`Predicate`，测试其中的内容。例如：`Range.atMost(2)`就是一个`Predicate<Integer>`，更多详情请参考[相关内容](/区间-范围/区间-范围(Ranges).md)。
 
 ### `Function`和`Predicate`的操作
 简单的`Function`构造和操作在`Functions`类中，包括：
