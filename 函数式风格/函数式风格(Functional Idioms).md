@@ -54,3 +54,65 @@ for (String s : strings) {
 务必确定在使用函数式风格的时候，传统紧凑的方式具有更差的可读性。尝试那种方式是否更加糟糕？是否比你正要使用的别扭的函数式方式具有更高的可读性？
 
 # `Function`和`Predicate`
+本文仅讨论直接与`Function`和`Predicate`有关的功能。其他有关函数式风格的工具像在常数时间内返回视图的方法请参见[集合工具类](集合/工具类(Utility classes).md)。
+
+Guava提供了两个基础的“函数式”接口：
+
+- `Function<A, B>`，只有一个方法`B apply(A)`。对于每一个`a.equals(b)`，都一定会有`function.apply(a).equals(function.apply(b))`。
+- `Predicate<T>`，只有一个方法`boolean apply(T)`，任意时间对于相同的输入都一定会产生相同的输出。
+
+### 特殊的`Predicate`
+对于字符，有特定的`Predicate` — `CharMatcher`，具有更高的效率并且更加有用。`CharMatcher`实现了`Predicate<Character>`，使用`CharMatcher.forPredicate()`可以把一个`Predicate`转成`CharMatcher`。详细信息请参考[`CharMatcher`](字符串/字符串(Strings).md)一节。
+
+另外，对基于比较的`Predicate`，大多数需求都可以通过`Range`类型来解决。`Range`实现了`Predicate`，测试其中的内容。例如：`Range.atMost(2)`就是一个`Predicate<Integer>`，更多详情请参考[相关内容](区间-范围/区间-范围(Ranges).md)。
+
+### `Function`和`Predicate`的操作
+简单的`Function`构造和操作在`Functions`类中，包括：
+
+1 | 2 | 3 | 4 | 5
+--- | --- | --- | --- | ---
+`forMap(Map<A, B>)` | `compose(Function<B, C>, Function<A, B>)` | `constant(T)` | `identity()` | `toStringFunction()`
+
+详情参加Javadoc。
+
+`Predicates`中有很多构造和操作的方法，以下是一部分：
+
+1 | 2 | 3 | 4
+--- | --- | --- | ---
+`instanceOf(Class)` | `assignableFrom(Class)` | `constains(Pattern)` | `in(Collection)`
+`isNull()` | `alwaysFalse()` | `alwaysTrue` | `equalTo(Object)`
+`compose(Predicate, Function)` | `and(Predicate...)` | `or(Predicate...)` | `not(Predicate)`
+
+详情参加Javadoc。
+
+## 使用
+Guava提供了很多使用`Function`和`Predicate`操作集合的工具，这些可以在集合工具类`Iterables`，`lists`，`Sets`，`Maps`，`Multimaps`等类中找到。
+
+### `Predicates`
+Predicates最常用的功能是过滤集合。所有Guava的过滤方法都会返回视图。
+
+集合类型 | 过滤方法 | - | -
+--- | --- | --- | ---
+Iterable | Iterables.filter(Iterable, Predicate) | FluentIterable.filter(Predicate)
+Iterator | Iterators.filter(Iterator, Predicate)
+Collection | Collections2.filter(Collection, Predicate)
+Set | Sets.filter(Set, Predicate)
+SortedSet | Sets.filter(SortedSet, Predicate)
+Map | Maps.filterKeys(Map, Predicate) | Maps.filterValues(Map, Predicate) | Maps.filterEntries(Map, Predicate)
+SortedMap | Maps.filterKeys(SortedMap, Predicate) | Maps.filterValues(SortedMap, Predicate) | Maps.filterEntries(SortedMap, Predicate)
+MultiMap | MultiMaps.filterKeys(MultiMap, Predicate) | MultiMaps.filterValues(MultiMap, Predicate) | MultiMaps.filterEntries(MultiMap, Predicate)
+
+`List`过滤的视图是被忽略的，因为不能很好的支持像`get(int)`这样的操作。使用`Lists.newArrayList(Collections2.filter(list, predicate))`生成一个拷贝。
+
+护理过滤，Guava还提供了很多工具使用Predicate来操作迭代器，尤其是`Iterables`和`FluentIterables`类。
+
+Iterables方法签名 | 说明 | 另请参考
+--- | --- | ---
+boolean all(Iterable, Predicate) | 是否所有元素满足Predicate？惰性判断，如果有一个不满足，则不会再继续迭代 | Iterators.all(Iterator, Predicate) FluentIterable.allMatch(Predicate)
+boolean any(Iterable, Predicate) | 迭代器中有元素满足Predicate吗？惰性判断，一直迭代直到找到一个满足的元素 | Iterators.any(Iterator, Predicate) FluentIterable.anyMatch(Predicate)
+T find(Iterable, Predicate) | 查找满足条件的元素或者抛出NoSuchElementException | Iterators.find(Iterator, Predicate) Iterables.find(Iterable, Predicate, T default) Iterators.find(Iterator, Predicate, T default)
+Optional<T> tryFind(Iterable,Predicate) | 返回找到的元素，或者Optional.absent() | Iterators.tryFind(Iterator, Predicate) FluentIterable.firstMatch(Predicate) OPtional
+indexOf(Iterable, Predicate) | 返回找到的元素的索引，如果没找到则返回-1 | Iterators.indexOf(Iterator, Predicate) 
+removeIf(Iterable, Predicate) | 返回所有满足条件的元素，使用Iterator.remove()方法 | Iterators.removeIf(Iterator, Predicate)
+
+### `Functions`
