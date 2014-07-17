@@ -116,3 +116,52 @@ indexOf(Iterable, Predicate) | 返回找到的元素的索引，如果没找到�
 removeIf(Iterable, Predicate) | 返回所有满足条件的元素，使用Iterator.remove()方法 | Iterators.removeIf(Iterator, Predicate)
 
 ### `Functions`
+目前函数式风格最常用的场景就是集合转换。Guava所有的转换方法都返回常规集合的视图。
+
+集合类型 | 转换方法
+--- | ---
+Iterable | Iterables.transform(Iterable, Function) FluentIterable.transform(Function)
+Iterator | Iterators.transform(Iterator)
+Collection | Collection2.transform(Collection, Function)
+List | Lists.transform(List, Function)
+Maps* | Maps.transformValues(Map, Function) Maps.transformEntries(Map, EntryTransformer)
+SortedMap* | Maps.transformValues(SortedMap, Function) Maps.transformEntries(SortedMap, EntryTransformer)
+Multimap* | Multimaps.transformValues(Multimap, Function) Multimaps.transformEntries(Multimap, EntryTransformer)
+ListMultimap* | Multimaps.transformValues(ListMultimap, Function) Multimaps.transformEntries(ListMultimap, EntryTransformer)
+Table | Tables.transformValues(Table, Function)
+
+*`Map`和`Multimap`有一个接受`EntryTransformer(K, V1, V2)`的特殊方法，它用key和之前的value计算出新的value，并将其与该key关联起来。
+
+**`Set`的转换是被忽略的，因为它不能很好的支持`contains(Object)`方法。作为补充，使用`Sets.newHashSet(Collections2.transform(set, function))`创建一个已转换的Set的副本。
+
+```java
+List<String> names;
+Map<String, Person> personWithName;
+List<Person> people = Lists.transform(names, Functions.forMap(personWithName));
+```
+
+```java
+//first name映射到同一个人的所有last name
+ListMultimap<String, String> firstNameToLastNames;
+ListMultimap<String, String> firstNameToName = Multimaps.transformEntries(firstNameToLastNames, new EntryTransformer<String, String, String>() {
+	public String transformEntry(String firstName, String lastName) {
+		return firstName + " " + lastName;
+	}
+});
+```
+
+一些Functions的可用场景如下：
+类型 | 方法
+--- | ---
+Ordering | Ordering.onResultOf(Function)
+Predicate | Predicates.conpose(Predicate, Function)
+Equivalence | Equivalence.onResultOf(Function)
+Supplier | Suppliers.compose(Function, Supplier)
+Function | Functions.compose(Function, Function)
+
+另外，`ListenableFuture`可以转换监听的事件(listenable futures)。`Futures`同样提供了一个接受`AsyncFunction`（`Function`的一个变体，可以异步的计算结果）的方法。
+
+`Futures.transform(ListenableFuture, Function)`
+`Futures.transform(ListenableFuture, AsyncFunction)`
+`Futures.transform(ListenableFuture, Function, Executor)`
+`Futures.transform(ListenableFuture, AsyncFunction, Executor)`
