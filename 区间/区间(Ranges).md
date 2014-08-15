@@ -163,3 +163,23 @@ Long | longs()
 一旦获取到了`DiscreteDomain`，即可使用以下`Range`操作：
 
 - `ContiguousSet.create(range, domain)`：将`Range<C>`作为一个`ImmutableSet<C>`视图
+- `canonical(domain)`：把ranges变为“规范形式”。如果`ContiguousSet.create(a, domain).equals(ContiguousSet.create(b, domain))`并且`!a.isEmpty()`，那么`a.canonical(domain).equals(b.canonical(domain))`。
+
+```java
+ImmutableSortedSet<Integer> set = ContiguousSet.create(Range.open(1, 5), DiscreteDomain.integers());
+// set包含[2,3,4]
+
+ContiguousSet.create(Range.greaterThan(0), DiscreteDomain.integers());
+//set包含[1,2,3...,Integer.MAX_VALUE]
+```
+
+`Contiguous.create`并不是真正的构造完整的范围，只是返回一个范围的Set视图。
+
+### 自定义非连续区域
+可以自定义我们自己的`DiscreteDomain`对象，但是请记住以下关于`DiscreteDomain`的几条重要原则：
+
+- 一个非连续的区域总是表示该类型的全集；不能表示部分区域（质数、长度为5的字符串等）。例如，不能通过精确到秒的`JODA DateTime`来构造`DiscreteDomain`来查看工作日的集合，因为它不是该类型的全集。
+- `DiscreteDomain`可能是无穷大的，例如`BigInteger`的`DiscreteDomain`，这种情况下，应该使用默认的抛出`NoSuchElementException`的`minValue()`，`maxValue()`。禁止在一个无限大的范围上使用`ContiguousSet.create()`方法。
+
+### 如果需要一个`Comparator`该怎么做？
+TODO
