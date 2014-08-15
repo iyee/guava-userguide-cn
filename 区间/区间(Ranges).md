@@ -154,6 +154,7 @@ Range.closed(1, 5).span(Range.closed(6, 10)); //[1, 10]
 Guava中，`DiscreteDomain<C>`为C类型的数据实现了非连续的操作。一个非连续的区域表示该类型的所有制（全集），不能表示部分区域例如质数，长度为5的字符串，午夜时间戳等。
 
 `DiscreteDomain`类提供了`DiscreteDomain`实例：
+
 类型 | DiscreteDomain
 --- | ---
 Integer | integers()
