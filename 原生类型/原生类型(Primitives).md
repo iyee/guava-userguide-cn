@@ -28,6 +28,7 @@ boolean | Booleans
 
 # 原生数组工具
 原生数组是原生类型最有效率（内存和性能）的聚合。Guava提供了一系列这方面的工具：
+
 签名 | 描述 | 集合 | 适用范围
 --- | --- | --- | ---
 List<Wrapper> asList(prim... backingArray) | 把原生类型的数组转换成对应包装类型的List | Arrays.asList | Sign-independent
