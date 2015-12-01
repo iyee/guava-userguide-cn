@@ -60,7 +60,7 @@ LoadingCache<Key, Graph> graphs = CacheBuilder.newBuilder().expireAfterAccess(10
 return graphs.getUnchecked(key);
 ```
 
-批量查询可以使用`getAll(Iterable<? extends K>)`。默认情况下，`getAll`对于每一个不存在于缓存中的key都将触发一个单独的`CacheLoader.load`调用。当批量获取比单独获取跟家高效的时候，可以覆写`CacheLoader.loadAll()`改变这个行为。`getAll`的性能会有相应的提高。
+批量查询可以使用`getAll(Iterable<? extends K>)`。默认情况下，`getAll`对于每一个不存在于缓存中的key都将触发一个单独的`CacheLoader.load`调用。当批量获取比单独获取更加高效的时候，可以覆写`CacheLoader.loadAll()`改变这个行为。`getAll`的性能会有相应的提高。
 
 ## 从`Callable`加载
 所有Guava的缓存，加载或不加载的，都支持`get(K, Callable<V>)`。这个方法返回与此key相关联的值，或从`Callable`中计算并添加到缓存中。直到加载完毕`Cache`的状态才会改变。这个方法使用了一种简单的方式来代替了“如果有，返回；如果没有，创建、存储并返回”模式。
